@@ -1,5 +1,21 @@
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.db import models
+
+
+class Supervisor(User):
+    company = models.ManyToManyField(
+        'Enterprise',
+        related_name='supervisors',
+        verbose_name='Предприятие',
+    )
+
+    class Meta:
+        verbose_name = 'Менеджер'
+        verbose_name_plural = 'Менеджеры'
+
+    def __str__(self):
+        return f'{self.username}'
 
 
 class Vehicle(models.Model):
@@ -44,13 +60,15 @@ class Vehicle(models.Model):
         return f'{self.brand} {self.release_date}'
 
     def save(self, *args, **kwargs):
+        # TODO: переместить обработку этого случая в админку
+
         if not self.drivers.filter(is_active=True):
             super(Vehicle, self).save(*args, **kwargs)
         else:
             messages.error(
                 kwargs['request'],
                 message='Невозможно переназначить предприятие, '
-                'т.к. за автомобилем закреплен активный водитель',
+                        'т.к. за автомобилем закреплен активный водитель',
             )
 
 
