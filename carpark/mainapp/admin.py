@@ -29,6 +29,13 @@ class VehicleAdmin(admin.ModelAdmin):
     search_fields = ('release_date', 'company__name')
 
     def get_queryset(self, request) -> QuerySet:
+        """Метод переопределен для получения списка автомобилей в зависимости
+        от того, какой менеджер просматривает (зарегистрированного менеджера).
+        Т.е. менеджер видит автомобили только тех предприятий, которые ведет.
+
+        :param request: Request
+        :return: QuerySet[Vehicle]
+        """
         vehicles = super(VehicleAdmin, self).get_queryset(request)
         if not request.user.is_superuser:
             enterprises = Enterprise.objects.filter(
@@ -39,6 +46,14 @@ class VehicleAdmin(admin.ModelAdmin):
         return vehicles
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """Метод переопределен для получения выпадающего списка компаний в
+        зависимости от того, какой менеджер просматривает (зарегистрированного
+        менеджера). Т.е. менеджер видит в выпадающем списке только те
+        предприятия, которые ведет.
+
+        :param db_field: models.Vehicle.company
+        :param request: Request
+        """
         if db_field.name == 'company':
             kwargs['queryset'] = Enterprise.objects.filter(
                 supervisors__id=request.user.id,
@@ -76,6 +91,13 @@ class EnterpriseAdmin(admin.ModelAdmin):
     search_fields = ('name', 'city')
 
     def get_queryset(self, request) -> QuerySet:
+        """Метод переопределен для получения списка предприятия в зависимости
+        от того, какой менеджер просматривает (зарегистрированного менеджера).
+        Т.е. менеджер видит только те предприятия, которые ведет.
+
+        :param request: Request
+        :return: QuerySet[Vehicle]
+        """
         enterprises = super(EnterpriseAdmin, self).get_queryset(request)
         if not request.user.is_superuser:
             enterprises = enterprises.filter(
@@ -108,6 +130,13 @@ class DriverAdmin(admin.ModelAdmin):
     search_fields = ('id', 'name', 'company', 'vehicle', 'category')
 
     def get_queryset(self, request):
+        """Метод переопределен для получения списка водителей в зависимости
+        от того, какой менеджер просматривает (зарегистрированного менеджера).
+        Т.е. менеджер видит только тех водителей, предприятия которых ведет.
+
+        :param request: Request
+        :return: QuerySet[Vehicle]
+        """
         drivers = super(DriverAdmin, self).get_queryset(request)
         if not request.user.is_superuser:
             enterprises = Enterprise.objects.filter(
@@ -118,6 +147,14 @@ class DriverAdmin(admin.ModelAdmin):
         return drivers
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """Метод переопределен для получения выпадающих списков компаний и
+        автомобилей в зависимости от того, какой менеджер просматривает
+        (зарегистрированного менеджера). Т.е. менеджер видит в выпадающем списке
+         только те предприятия и автомобили, предприятия которых ведет.
+
+        :param db_field: models.Driver.db_field
+        :param request: Request
+        """
         enterprises = Enterprise.objects.filter(
                 supervisors__id=request.user.id,
             )
