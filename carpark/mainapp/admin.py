@@ -38,6 +38,14 @@ class VehicleAdmin(admin.ModelAdmin):
 
         return vehicles
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'company':
+            kwargs['queryset'] = Enterprise.objects.filter(
+                supervisors__id=request.user.id,
+            )
+            
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
     def save_model(self, request, obj, form, change):
         # TODO: при сохранении в модели должна проходить проверка на то,
         #  назначен ли активный водитель на автомобиль. Если назначен,
@@ -108,6 +116,19 @@ class DriverAdmin(admin.ModelAdmin):
             drivers = drivers.filter(company__in=enterprises)
 
         return drivers
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        enterprises = Enterprise.objects.filter(
+                supervisors__id=request.user.id,
+            )
+        if db_field.name == 'company':
+            kwargs['queryset'] = enterprises
+        elif db_field.name == 'vehicle':
+            kwargs['queryset'] = Vehicle.objects.filter(
+                company__in=enterprises,
+            )
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 @admin.register(Supervisor)
