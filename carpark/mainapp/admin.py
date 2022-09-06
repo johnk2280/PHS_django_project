@@ -1,5 +1,3 @@
-from typing import Iterable
-
 from django.contrib import admin
 from django.db.models import QuerySet
 
@@ -30,19 +28,15 @@ class VehicleAdmin(admin.ModelAdmin):
     )
     search_fields = ('release_date', 'company__name')
 
-    def get_queryset(self, request) -> Iterable:
-        vehicle_qs = super(VehicleAdmin, self).get_queryset(request)
+    def get_queryset(self, request) -> QuerySet:
+        vehicles = super(VehicleAdmin, self).get_queryset(request)
         if not request.user.is_superuser:
-            vehicles = []
             enterprises = Enterprise.objects.filter(
                 supervisors__id=request.user.id,
             )
-            for company in enterprises:
-                vehicles.extend(vehicle_qs.filter(company__id=company.id))
+            vehicles = vehicles.filter(company__in=enterprises)
 
-            return vehicles
-
-        return vehicle_qs
+        return vehicles
 
     def save_model(self, request, obj, form, change):
         # TODO: при сохранении в модели должна проходить проверка на то,
@@ -73,6 +67,15 @@ class EnterpriseAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'city')
     search_fields = ('name', 'city')
 
+    def get_queryset(self, request) -> QuerySet:
+        enterprises = super(EnterpriseAdmin, self).get_queryset(request)
+        if not request.user.is_superuser:
+            enterprises = enterprises.filter(
+                supervisors__id=request.user.id,
+            )
+
+        return enterprises
+
 
 @admin.register(Driver)
 class DriverAdmin(admin.ModelAdmin):
@@ -95,6 +98,16 @@ class DriverAdmin(admin.ModelAdmin):
         'is_active',
     )
     search_fields = ('id', 'name', 'company', 'vehicle', 'category')
+
+    def get_queryset(self, request):
+        drivers = super(DriverAdmin, self).get_queryset(request)
+        if not request.user.is_superuser:
+            enterprises = Enterprise.objects.filter(
+                supervisors__id=request.user.id,
+            )
+            drivers = drivers.filter(company__in=enterprises)
+
+        return drivers
 
 
 @admin.register(Supervisor)
