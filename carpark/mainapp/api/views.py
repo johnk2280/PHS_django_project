@@ -15,6 +15,14 @@ class VehicleViewSet(ListModelMixin, GenericViewSet):
     # permission_classes = (IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return Response(
+                {
+                    'detail': 'У вас нет прав доступа.'
+                },
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
         vehicles = self.queryset
         if not request.user.is_superuser:
             enterprises = Enterprise.objects.filter(
