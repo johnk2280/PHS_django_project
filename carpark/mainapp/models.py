@@ -59,17 +59,17 @@ class Vehicle(models.Model):
     def __str__(self):
         return f'{self.brand} {self.release_date}'
 
-    def save(self, *args, **kwargs):
-        # TODO: переместить обработку этого случая в админку
-
-        if not self.drivers.filter(is_active=True):
-            super(Vehicle, self).save(*args, **kwargs)
-        else:
-            messages.error(
-                kwargs['request'],
-                message='Невозможно переназначить предприятие, '
-                        'т.к. за автомобилем закреплен активный водитель',
-            )
+    # def save(self, *args, **kwargs):
+    #     # TODO: переместить обработку этого случая в админку
+    #
+    #     if not self.drivers.filter(is_active=True):
+    #         super(Vehicle, self).save(*args, **kwargs)
+    #     else:
+    #         messages.error(
+    #             kwargs['request'],
+    #             message='Невозможно переназначить предприятие, '
+    #                     'т.к. за автомобилем закреплен активный водитель',
+    #         )
 
 
 class Brand(models.Model):

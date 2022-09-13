@@ -54,19 +54,19 @@ class VehicleAdmin(admin.ModelAdmin):
         :param db_field: models.Vehicle.company
         :param request: Request
         """
-        if db_field.name == 'company':
+        if db_field.name == 'company' and not request.user.is_superuser:
             kwargs['queryset'] = Enterprise.objects.filter(
                 supervisors__id=request.user.id,
             )
             
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
-    def save_model(self, request, obj, form, change):
-        # TODO: при сохранении в модели должна проходить проверка на то,
-        #  назначен ли активный водитель на автомобиль. Если назначен,
-        #  то должно вызываться исключение, которое будет обрабатываться здесь.
-        #  С выводом необходимого сообщения.
-        obj.save(request=request)
+    # def save_model(self, request, obj, form, change):
+    #     # TODO: при сохранении в модели должна проходить проверка на то,
+    #     #  назначен ли активный водитель на автомобиль. Если назначен,
+    #     #  то должно вызываться исключение, которое будет обрабатываться здесь.
+    #     #  С выводом необходимого сообщения.
+    #     obj.save(request=request)
 
 
 @admin.register(Brand)
@@ -158,12 +158,13 @@ class DriverAdmin(admin.ModelAdmin):
         enterprises = Enterprise.objects.filter(
                 supervisors__id=request.user.id,
             )
-        if db_field.name == 'company':
-            kwargs['queryset'] = enterprises
-        elif db_field.name == 'vehicle':
-            kwargs['queryset'] = Vehicle.objects.filter(
-                company__in=enterprises,
-            )
+        if not request.user.is_superuser:
+            if db_field.name == 'company':
+                kwargs['queryset'] = enterprises
+            elif db_field.name == 'vehicle':
+                kwargs['queryset'] = Vehicle.objects.filter(
+                    company__in=enterprises,
+                )
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
