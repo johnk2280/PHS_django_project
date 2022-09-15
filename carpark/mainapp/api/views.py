@@ -32,7 +32,7 @@ class VehicleViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin,
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class VehicleButchCreateModelViewSet(CreateModelMixin, GenericViewSet):
+class VehicleBatchCreateModelViewSet(CreateModelMixin, GenericViewSet):
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
     permission_classes = (IsAdminUser,)
