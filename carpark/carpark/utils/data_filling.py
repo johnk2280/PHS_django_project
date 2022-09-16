@@ -1,16 +1,14 @@
 import random
 from datetime import datetime
 from datetime import timedelta
-from itertools import chain
 from typing import Iterable
 from typing import Union
 from typing import List
-from typing import Optional
 
 from django.db.models import Model
 from django.db.models import QuerySet
 
-from mainapp.models import Enterprise
+from mainapp.models import Driver
 from mainapp.models import Brand
 from mainapp.models import Vehicle
 
@@ -20,6 +18,18 @@ BRANDS = (
     'NISSAN', 'RENAULT', 'ECOPLAN',
 )
 CAR_TYPES = ('легковой', 'грузовой', 'тягач', 'автобус', 'спортивный')
+CATEGORIES = (
+    'A', 'A1', 'B', 'B1', 'C', 'C1', 'D', 'D1', 'BE', 'CE', 'C1E', 'DE', 'D1E',
+    'M', 'Tm', 'Tb',
+)
+NAMES = (
+    'Василий', 'Андрей', 'Михаил', 'Петр', 'Сергей', 'Евгений', 'Александр',
+    'Кирилл', 'Макс', 'Авитис', 'Карен', 'Артем',
+)
+SURNAMES = (
+    'Сильный', 'Умный', 'Шустрый', 'Проворный', 'Сообразительный',
+    'Находчивый', 'Стойкий',
+)
 
 
 def get_random_date() -> datetime.date:
@@ -35,7 +45,7 @@ def create_random_brand() -> Model:
     )
     load_capacity = random.randint(
         1200 if car_type in ('легковой', 'спортивный') else 5000,
-        2000 if car_type in ('легковой', 'спортивный') else 40000,
+        2000 if car_type in ('легковой', 'спортивный') else 30000,
     )
     seat_number = random.randint(
         2 if car_type not in ('автобус',) else 12,
@@ -56,10 +66,9 @@ def create_random_vehicles(
         enterprises: Union[List, QuerySet],
         quantity: int,
 ) -> Iterable[Model]:
-    vehicles = iter([])
+    vehicles = []
     for company in enterprises:
-        vehicles = chain(
-            vehicles,
+        vehicles.extend(
             map(
                 lambda x: Vehicle(
                     cost=random.randint(100_000, 10_000_000),
@@ -73,3 +82,18 @@ def create_random_vehicles(
         )
 
     return vehicles
+
+
+def create_random_drivers(vehicles: Union[List, QuerySet]) -> Iterable[Model]:
+    drivers = map(
+        lambda car: Driver(
+            name=f'{random.choice(NAMES)} {random.choice(SURNAMES)}',
+            vehicle=car,
+            experience=random.randint(1, 40),
+            category=random.choice(CATEGORIES),
+            company=car.company,
+            is_active=True if random.randint(0, 10) % 10 == 0 else False,
+        ),
+        vehicles
+    )
+    return drivers
