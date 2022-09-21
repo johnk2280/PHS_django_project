@@ -8,7 +8,6 @@ from mainapp.models import Enterprise
 
 class UserLoginView(LoginView):
     template_name = 'authapp/login.html'
-    # success_url = 'authapp:enterprises'
 
     def get_success_url(self):
         return reverse_lazy('authapp:enterprises')
