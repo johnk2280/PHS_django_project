@@ -10,4 +10,5 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api-token-auth/', views.obtain_auth_token),
     path('api/v1/', include('mainapp.api.urls')),
+    path('auth/', include('authapp.urls')),
 ]

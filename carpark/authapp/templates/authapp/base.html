@@ -1,4 +1,4 @@
-{% load static &}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,14 +19,14 @@
 <body>
     <div class="container">
         {% block header %}
-            {% include "includes/inc_header.html" %}
+            {% include "authapp/includes/inc_header.html" %}
         {% endblock %}
 
         {% block content %}
         {% endblock %}
 
         {% block footer %}
-            {% include "includes/inc_footer.html" %}
+            {% include "authapp/includes/inc_footer.html" %}
         {% endblock %}
 
     </div>
