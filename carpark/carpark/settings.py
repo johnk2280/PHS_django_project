@@ -156,5 +156,5 @@ REST_FRAMEWORK = {
 }
 
 LOGIN_URL = '/auth/login/'
-
+# LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL = '/'
