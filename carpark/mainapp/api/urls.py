@@ -7,6 +7,8 @@ from .views import DriverViewSet
 from .views import VehicleViewSet
 from .views import VehicleBatchCreateModelViewSet
 
+from mainapp.views import IndexView
+
 app_name = 'mainapp'
 
 router = DefaultRouter()
@@ -20,5 +22,6 @@ router.register(
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('home/', IndexView.as_view(), name='home'),
 ]
 

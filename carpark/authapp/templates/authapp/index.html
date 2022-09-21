@@ -1,0 +1,27 @@
+{% extends "authapp/base.html" %}
+
+{% block title %}
+Главная
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <h1>Hello, {{ username }}!!!</h1>
+    <table class="table table-bordered" id="dataTable">
+        <thead>
+        <tr align="center" bgcolor="#e2e1da">
+            <th>Название</th>
+            <th>Компания</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for company in enterprises %}
+        <tr align="center" bgcolor="#f5f4ed">
+            <td>{{ company.name }}</td>
+            <td>{{ company.city }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
