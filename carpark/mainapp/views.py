@@ -7,5 +7,5 @@ class IndexView(View):
 
     def get(self, request):
         context = {}
-        return render(request, 'mainapp/index.html', context=context)
+        return render(request, 'mainapp/enterprises.html', context=context)
 

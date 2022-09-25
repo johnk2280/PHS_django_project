@@ -1,0 +1,35 @@
+{% extends "authapp/base.html" %}
+
+
+{% block title %}
+   {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<h3>Hello, {{ user.username }}.</h3>
+<h3>Список машин.</h3>
+    <table class="table table-bordered" id="dataTable">
+        <thead>
+        <tr align="center" bgcolor="#e2e1da">
+            <th>Брэнд</th>
+            <th>Год выпуска</th>
+            <th>Пробег</th>
+            <th>Стоимость</th>
+            <th>Автопарк</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for car in vehicles %}
+        <tr align="center" bgcolor="#f5f4ed">
+            <td>{{ car.brand }}</td>
+            <td>{{ car.release_date }}</td>
+            <td>{{ car.mileage }}</td>
+            <td>{{ car.cost }}</td>
+            <td>{{ car.company }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

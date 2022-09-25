@@ -17,7 +17,9 @@
         <tbody>
         {% for company in enterprises %}
         <tr align="center" bgcolor="#f5f4ed">
-            <td>{{ company.name }}</td>
+            <td>
+                <a href="{{ company.get_absolute_url }}">{{ company.name }}</a>
+            </td>
             <td>{{ company.city }}</td>
         </tr>
         {% endfor %}
