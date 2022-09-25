@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms import modelform_factory
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView
 from django.core.paginator import EmptyPage
@@ -5,6 +7,9 @@ from django.core.paginator import Paginator
 from django.core.paginator import PageNotAnInteger
 from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic import UpdateView
+
+from .forms import VehicleForm
 
 from mainapp.models import Vehicle
 from mainapp.models import Enterprise
@@ -17,7 +22,7 @@ class UserLoginView(LoginView):
         return reverse_lazy('authapp:enterprises')
 
 
-class EnterprisesView(View):
+class EnterprisesView(LoginRequiredMixin, View):
     def get(self, request) -> render:
         enterprises = Enterprise.objects.filter()
         if not request.user.is_superuser:
@@ -32,7 +37,7 @@ class EnterprisesView(View):
         return render(request, 'authapp/enterprises.html', context)
 
 
-class EnterpriseView(View):
+class EnterpriseView(LoginRequiredMixin, View):
     def get(self, request, pk) -> render:
         vehicles = Vehicle.objects.filter(company__id=pk)
         company = Enterprise.objects.get(id=pk)
@@ -56,3 +61,21 @@ class EnterpriseView(View):
         }
         return render(request, 'authapp/enterprise.html', context)
 
+
+class VehicleEditView(LoginRequiredMixin, UpdateView):
+    model = Vehicle
+    fields = '__all__'
+    template_name = 'authapp/vehicle_form.html'
+    success_url = reverse_lazy('authapp:enterprises')
+
+    # def get_context_data(self, **kwargs):
+    #     data = super(VehicleEditView, self).get_context_data(**kwargs)
+    #     VehicleModelForm = modelform_factory(
+    #         Vehicle,
+    #         form=VehicleForm,
+    #     )
+    #
+    #     model_form = VehicleModelForm(self.request.POST)
+    #
+    #     data['vehicle'] = model_form
+    #     return data

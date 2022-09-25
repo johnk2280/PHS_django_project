@@ -12,6 +12,7 @@
     <table class="table table-bordered" id="dataTable">
         <thead>
         <tr align="center" bgcolor="#e2e1da">
+            <th>ID</th>
             <th>Брэнд</th>
             <th>Год выпуска</th>
             <th>Пробег</th>
@@ -24,6 +25,7 @@
         <tbody>
         {% for car in vehicles %}
         <tr align="center" bgcolor="#f5f4ed">
+            <td>{{ car.id }}</td>
             <td>{{ car.brand }}</td>
             <td>{{ car.release_date }}</td>
             <td>{{ car.mileage }}</td>
@@ -31,7 +33,7 @@
             <td>{{ car.company }}</td>
             <td>
                 <button class="btn btn-default btn-round">
-                    <a href="">Редактировать</a>
+                    <a href="{{ car.get_absolute_url }}">Редактировать</a>
                 </button>
             </td>
             <td>
