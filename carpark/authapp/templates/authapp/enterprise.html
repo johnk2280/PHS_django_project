@@ -17,6 +17,8 @@
             <th>Пробег</th>
             <th>Стоимость</th>
             <th>Автопарк</th>
+            <th>Редактировать</th>
+            <th>Удалить</th>
         </tr>
         </thead>
         <tbody>
@@ -27,9 +29,46 @@
             <td>{{ car.mileage }}</td>
             <td>{{ car.cost }}</td>
             <td>{{ car.company }}</td>
+            <td>
+                <button class="btn btn-default btn-round">
+                    <a href="">Редактировать</a>
+                </button>
+            </td>
+            <td>
+                 <button class="btn btn-default btn-round">
+                    <a href="">Удалить</a>
+                </button>
+            </td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
 </div>
+
+<!--Взял откуда-то не сильно вникая-->
+{% if vehicles.has_other_pages %}
+<nav id="pagination" class="col align-self-center" aria-label="Page navigation example">
+    <ul class="pagination">
+    {% if vehicles.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ vehicles.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</span></li>
+    {% endif %}
+    {% for i in vehicles.paginator.page_range %}
+        {% if i > vehicles.number|add:-4 and i < posts.number|add:4 %}
+            {% if vehicles.number == i %}
+                <li class="page-item active" aria-current="page"><a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    {% if vehicles.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ vehicles.next_page_number }}">&raquo;</a></li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;</span></li>
+    {% endif %}
+    </ul>
+</nav>
+{% endif %}
 {% endblock %}

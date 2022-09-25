@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView
+from django.core.paginator import EmptyPage
+from django.core.paginator import Paginator
+from django.core.paginator import PageNotAnInteger
 from django.urls import reverse_lazy
 from django.views import View
 
@@ -31,13 +34,25 @@ class EnterprisesView(View):
 
 class EnterpriseView(View):
     def get(self, request, pk) -> render:
-        vehicles = Vehicle.objects.filter(company__id=pk)[:10]
+        vehicles = Vehicle.objects.filter(company__id=pk)
         company = Enterprise.objects.get(id=pk)
+        if 'page' in request.GET:
+            page = request.GET['page']
+        else:
+            page = 1
+
+        paginator = Paginator(vehicles, 10)
+        try:
+            vehicles = paginator.page(page)
+        except PageNotAnInteger:
+            vehicles = paginator.page(1)
+        except EmptyPage:
+            vehicles = paginator.page(paginator.num_pages)
+
         context = {
             'vehicles': vehicles,
             'title': f'{company.name} company',
             'user': request.user,
         }
-        # TODO: пагинация
         return render(request, 'authapp/enterprise.html', context)
 
