@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
 
 
 class Supervisor(User):
@@ -58,6 +59,9 @@ class Vehicle(models.Model):
 
     def __str__(self):
         return f'{self.brand} {self.release_date}'
+
+    def get_absolute_url(self) -> str:
+        return reverse('authapp:vehicle_edit', kwargs={'pk': self.pk})
 
     # def save(self, *args, **kwargs):
     #     # TODO: переместить обработку этого случая в админку
@@ -133,6 +137,9 @@ class Enterprise(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+    def get_absolute_url(self) -> str:
+        return reverse('authapp:enterprise', kwargs={'pk': self.pk})
 
 
 class Driver(models.Model):
