@@ -5,6 +5,8 @@ from mainapp.models import Vehicle
 
 
 class VehicleSerializer(serializers.ModelSerializer):
+    tz_info = serializers.CharField()
+
     class Meta:
         model = Vehicle
         fields = '__all__'

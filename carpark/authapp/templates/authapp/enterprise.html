@@ -1,11 +1,15 @@
 {% extends "authapp/base.html" %}
+{% load tz %}
 
 
 {% block title %}
-   {{ title }}
+{{ title }}
 {% endblock %}
 
+
+
 {% block content %}
+
 <div class="row">
 <h3>Hello, {{ user.username }}.</h3>
 <h3>Список машин.</h3>
@@ -18,6 +22,7 @@
             <th>Пробег</th>
             <th>Стоимость</th>
             <th>Автопарк</th>
+            <th>Created at</th>
             <th>Редактировать</th>
             <th>Удалить</th>
         </tr>
@@ -31,6 +36,11 @@
             <td>{{ car.mileage }}</td>
             <td>{{ car.cost }}</td>
             <td>{{ car.company }}</td>
+            <td>
+                {% localtime on %}
+                    {{ car.created_at }}
+                {% endlocaltime %}
+            </td>
             <td>
                 <button class="btn btn-default btn-round">
                     <a href="{{ car.get_absolute_url }}">Редактировать</a>

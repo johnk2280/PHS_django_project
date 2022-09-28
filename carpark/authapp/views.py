@@ -1,5 +1,4 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.forms import modelform_factory
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView
 from django.core.paginator import EmptyPage
