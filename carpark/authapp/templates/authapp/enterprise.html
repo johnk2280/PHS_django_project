@@ -21,7 +21,7 @@
             <th>Стоимость</th>
             <th>Автопарк</th>
             <th>Created at UTC</th>
-            <th>Created at Current User TZ</th>
+<!--            <th>Created at Current User TZ</th>-->
             <th>Created at Company location TZ</th>
             <th>Город</th>
             <th>Редактировать</th>
@@ -40,12 +40,12 @@
             <td>
                 {{ car.created_at }}
             </td>
-            <td>
-                {% load tz %}
-                {% timezone "Asia/Yekaterinburg" %}
-                {{ car.created_at }}
-                {% endtimezone %}
-            </td>
+<!--            <td>-->
+<!--                {% load tz %}-->
+<!--                {% timezone "Asia/Yekaterinburg" %}-->
+<!--                {{ car.created_at }}-->
+<!--                {% endtimezone %}-->
+<!--            </td>-->
             <td>
                 {% load tz %}
                 {% timezone car.company.tz_info %}

@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView
 from django.core.paginator import EmptyPage
@@ -78,3 +79,5 @@ class VehicleEditView(LoginRequiredMixin, UpdateView):
     #
     #     data['vehicle'] = model_form
     #     return data
+
+
