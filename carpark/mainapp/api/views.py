@@ -4,7 +4,6 @@ from rest_framework.mixins import DestroyModelMixin
 from rest_framework.mixins import ListModelMixin
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.mixins import UpdateModelMixin
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -42,6 +41,10 @@ class VehicleViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin,
         serializer = self.serializer_class(vehicles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+# import re
+# r = r'(\-(\d*))
+# r = re.compile(r)
+# int(r.findall('utc-3')[0][0])
 
 class VehicleBatchCreateModelViewSet(CreateModelMixin, GenericViewSet):
     queryset = Vehicle.objects.all()

@@ -10,7 +10,6 @@ from .views import VehicleBatchCreateModelViewSet
 from mainapp.views import IndexView
 
 app_name = 'mainapp'
-
 router = DefaultRouter()
 router.register('vehicles', VehicleViewSet, basename='vehicles')
 router.register('drivers', DriverViewSet, basename='drivers')

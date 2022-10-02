@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'authapp.middleware.TimezoneMiddleware',
 ]
 
 ROOT_URLCONF = 'carpark.urls'
@@ -114,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'Asia/Yekaterinburg'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 

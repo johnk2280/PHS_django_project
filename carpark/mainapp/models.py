@@ -118,6 +118,11 @@ class Brand(models.Model):
 
 
 class Enterprise(models.Model):
+    TZ_CHOICES = (
+        ('UTC', 'UTC'),
+        ('Europe/Moscow', 'Europe/Moscow'),
+        ('Asia/Yekaterinburg', 'Asia/Yekaterinburg'),
+    )
     name = models.CharField(
         max_length=50,
         unique=True,
@@ -128,6 +133,12 @@ class Enterprise(models.Model):
         max_length=50,
         null=False,
         verbose_name='Город',
+    )
+    tz_info = models.CharField(
+        max_length=50,
+        default='UTC',
+        choices=TZ_CHOICES,
+        verbose_name='Часовой пояс',
     )
 
     class Meta:

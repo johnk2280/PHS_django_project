@@ -25,6 +25,7 @@ class VehicleAdmin(admin.ModelAdmin):
         'mileage',
         'cost',
         'display_company',
+        'created_at',
     )
     search_fields = ('release_date', 'company__name')
 
@@ -87,7 +88,7 @@ class BrandAdmin(admin.ModelAdmin):
 
 @admin.register(Enterprise)
 class EnterpriseAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'city')
+    list_display = ('id', 'name', 'city', 'tz_info')
     search_fields = ('name', 'city')
 
     def get_queryset(self, request) -> QuerySet:
