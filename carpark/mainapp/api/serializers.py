@@ -8,7 +8,7 @@ from mainapp.models import Vehicle
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Enterprise
-        fields = ('id', 'name', 'tz_info')
+        fields = ('id', 'tz_info')
 
 
 class VehicleSerializer(serializers.ModelSerializer):
