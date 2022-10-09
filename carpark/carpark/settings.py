@@ -40,11 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
 
     'rest_framework',
     'rest_framework.authtoken',
     'mainapp.apps.MainappConfig',
     'authapp.apps.AuthappConfig',
+    'geoapp.apps.GeoappConfig',
 ]
 
 MIDDLEWARE = [
@@ -82,13 +84,18 @@ WSGI_APPLICATION = 'carpark.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': env('POSTGRES_DB'),
+    #     'USER': env('POSTGRES_USER'),
+    #     'PASSWORD': env('POSTGRES_PASSWORD'),
+    #     'HOST': env('POSTGRES_HOST'),
+    #     'PORT': env('POSTGRES_PORT')
+    # },
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('POSTGRES_DB'),
-        'USER': env('POSTGRES_USER'),
-        'PASSWORD': env('POSTGRES_PASSWORD'),
-        'HOST': env('POSTGRES_HOST'),
-        'PORT': env('POSTGRES_PORT')
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'test_gis_db',
+        'USER': 'johnk',
     },
 }
 
@@ -133,7 +140,6 @@ STATICFILES_FINDERS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.joinpath('media')
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
